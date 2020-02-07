@@ -1,0 +1,180 @@
+@*
+    2016 07 25 - Eric Tan - Created
+*@
+
+@*@{Layout = "~/Views/Shared/_Layout_Edit.cshtml";}*@
+
+@model AG.MVC.Models.Submission
+@using AG.MVC.Utils.Extensions;
+@using AG.MVC.Utils
+@using AG.MVC.ViewModel
+@using AG.MVC.Models
+@{
+    ViewBag.Title = "Create New Roaming Activation Request";
+
+    string userId = "";
+    string userInitial = "";
+    string userName = "";
+    string userUnit = "";
+    string userOffice = "";
+    string userOfficeCountry = "";
+    string userTel = "";
+    string userDept = "";
+    string userDesignation = "";
+
+    if (HttpContext.Current.Session["CurrentUser"] != null)
+    {
+        vmUser user = HttpContext.Current.Session["CurrentUser"] as vmUser;
+        userId = user.UserId;
+        userInitial = user.Initial;
+        userName = user.FullName;
+        userUnit = user.Unit.ToString();
+        userOffice = user.Office.ToString();
+        userTel = user.Telephone;
+        userDept = user.Department;
+        userOfficeCountry = user.OfficeCountry;
+        userDesignation = user.Designation;
+    }
+}
+
+
+
+@* Must have for all edit form *@
+@Html.Custom().HiddenFieldsForEdit()
+
+@section Action{
+    <br />
+
+
+    @HTMLHelper.ButtonSave("Submit")
+    @HTMLHelper.ButtonClear()
+
+}
+
+@Html.HiddenFor(model => model.Unit, new { @Value = userUnit })
+@Html.HiddenFor(model => model.Office, new { @Value = userOffice })
+@Html.HiddenFor(model => model.Initials, new { @Value = userInitial })
+@Html.HiddenFor(model => model.CreatedBy, new { @Value = userId })
+@Html.HiddenFor(model => model.LastModifiedBy, new { @Value = userId })
+@*@Html.HiddenFor(model => model.StatusId, new { @Value = "1" })*@
+@Html.HiddenFor(model => model.Names, new { @Value = userName })
+@Html.HiddenFor(model => model.Department, new { @Value = userDept })
+<table class="formTable">
+    <tr>
+        <th class="colLabel" style="text-align:left;padding: 5px;">Health and Travel Declaration Form </th>
+    </tr>
+    <tr>
+        <td>In view of the novel coronavirus situation, A&G is taking additional precautionary measures to safeguard the well-being of our employees.</td>
+    </tr>
+    <tr>
+        <td>It is compulsory for all staff to submit this declaration by Wednesday, 12 February 2020.</td>
+    </tr>
+</table>
+
+<br />
+<br />
+<br />
+
+<table class="formTable">
+    <tr>
+        <th class="colLabel" style="text-align:left;padding: 5px;">Personal Information</th>
+        <th class="colValue"></th>
+        <th class="colLabel"></th>
+        <th class="colValue"></th>
+    </tr>
+    <tr>
+        <td>Name :</td>
+        <td colspan="3">
+            @Html.Label(userName)
+        </td>
+    </tr>
+    <tr>
+        <td>Designation :</td>
+        <td colspan="3">
+            @Html.Label(userDesignation)
+        </td>
+    </tr>
+    <tr>
+        <td>Department :</td>
+        <td colspan="3">
+            @Html.Label(userDept)
+        </td>
+    </tr>
+</table>
+
+<br />
+<br />
+<br />
+<table class="questTable">
+    <tr>
+        <th class="colLabel" style="text-align:left;padding: 5px">1. Health and Travel History Declaration</th>
+        <th></th>
+        <th></th>
+    </tr>
+    <tr>
+        <td></td>
+        <td>Yes</td>
+        <td>No</td>
+    </tr>
+    <tr>
+        <td class="colLabel" style="padding-left:15px;">a. @Html.LabelFor(model => model.Symptoms) </td>
+        <td>@Html.RadioButtonFor(model => model.Symptoms, true, false)</td>
+        <td>@Html.RadioButtonFor(model => model.Symptoms, false, false)</td>
+    </tr>
+
+    <tr>
+        <td class="colLabel" style="padding-left:15px;">@Html.LabelFor(model => model.TravelToChina)</td>
+        <td>@Html.RadioButtonFor(model => model.TravelToChina, true, false)</td>
+        <td>@Html.RadioButtonFor(model => model.TravelToChina, false, false)</td>
+    </tr>
+
+    <tr>
+        <td class="colLabel" style="padding-left:15px;">@Html.LabelFor(model => model.ChinaClinicHospital)</td>
+        <td>@Html.RadioButtonFor(model => model.ChinaClinicHospital, true, false)</td>
+        <td>@Html.RadioButtonFor(model => model.ChinaClinicHospital, false, false)</td>
+    </tr>
+
+    <tr>
+        <td class="colLabel" style="padding-left:15px;">@Html.LabelFor(model => model.CloseContactWithRecentCase)</td>
+        <td>@Html.RadioButtonFor(model => model.CloseContactWithRecentCase, true, false)</td>
+        <td>@Html.RadioButtonFor(model => model.CloseContactWithRecentCase, false, false)</td>
+    </tr>
+    <tr><td></td><td></td><td></td></tr>
+    <tr>
+        <th class="colLabel" style="text-align:left;padding: 5px">2. Upcoming Travel Plans Declaration</th>
+        <th></th>
+        <th></th>
+    </tr>
+
+    <tr>
+        <td></td>
+        <td>Yes</td>
+        <td>No</td>
+    </tr>
+
+    <tr>
+        <td class="colLabel">@Html.LabelFor(model => model.TravelPlan)</td>
+        <td>@Html.RadioButtonFor(model => model.TravelPlan, true, new { @id = "TravelPlanyes" })</td>
+        <td>@Html.RadioButtonFor(model => model.TravelPlan, false, new { @id = "TravelPlanno" })</td>
+    </tr>
+
+    <tr class="expand-travel-plan hide" colspan="3">
+        <td colspan="3">
+            <table class="questTable">
+                <tr><td>@Html.LabelFor(model => model.TravelPlanExpand) :</td></tr>
+                <tr>
+                    <td>@Html.EditorFor(model => model.TravelPlanExpand, new { htmlAttributes = new { rows = 5 } })</td>
+                </tr>
+                @*<tr>
+                        <th colspan="4" style="text-align:left">If yes, please provide the information below:</th>
+                    </tr>
+                    <tr>
+                            <td>@Html.Editor("Please provide Period of travel and Intended destination(s):", new { htmlAttributes = new { rows = 5 } })</td>
+                        </tr>*@
+            </table>
+        </td>
+    </tr>
+
+</table>
+
+

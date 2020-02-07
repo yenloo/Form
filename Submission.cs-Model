@@ -1,0 +1,60 @@
+//2016 07 25 - Eric Tan - Created
+
+using AG.MVC.Abstract;
+using AG.MVC.Utils.Annotations;
+using System.ComponentModel.DataAnnotations;
+
+namespace AG.MVC.Models
+{
+    public class Submission : Base
+    {
+        [Display(Name = "Name")]
+        [StringLength(150)]
+        [Required]
+        [EmployeeMultiSelectDataType]
+        public string Initials { get; set; }
+
+        [Display(Name = "Name")]
+        [StringLength(500)]
+        [Required]
+        public string Names { get; set; }
+
+        [Display(Name = "Department")]
+        [StringLength(1000)]
+        [Required]
+        [DataType(DataType.MultilineText)]
+        public string Department { get; set; }
+
+        [Display(Name = "a.	Do you or your immediate family have any fever, cough, sore throat, body ache or breathlessness?")]
+        [Required]
+        public bool Symptoms { get; set; }
+
+
+        [Display(Name = "b.	Have you or your immediate family travelled to Mainland China within the last 14 days?")]
+        [Required]
+        public bool TravelToChina { get; set; }
+
+        [Display(Name = "c.	Have you or your immediate family been to any clinic or hospital in Mainland China within the last 14 days?")]
+        [Required]
+        public bool ChinaClinicHospital { get; set; }
+
+        [Display(Name = "d.	Have you or your immediate family had close contact with a recent case of novel coronavirus infection?")]
+        [Required]
+        public bool CloseContactWithRecentCase { get; set; }
+
+
+        [Display(Name = "Do you have any upcoming travel plans for yourself and your immediate family?")]
+        [Required]
+        public bool TravelPlan { get; set; }
+
+        [Display(Name = "If yes, please provide information below stating the period(s) of travel and intended destination(s).")]
+        [StringLength(1000)]
+        [DataType(DataType.MultilineText)]
+        public string TravelPlanExpand { get; set; }
+        
+
+        //public int StatusId { get; set; }
+
+
+    }
+}
